@@ -1,0 +1,6 @@
+{
+  "name": "EarnKaro",
+  "description": "A simulated ad-watching platform where users earn virtual coins by completing offers and watching video ads.",
+  "domain": "earnkaro.gamer.gd",
+  "requestFramePermissions": []
+}
