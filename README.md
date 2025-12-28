@@ -1,0 +1,2 @@
+# EarnKaro
+Watch ads
