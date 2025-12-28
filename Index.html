@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Ads and Earn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .wallet-section {
+            padding: 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .wallet-icon {
+            font-size: 2.5rem;
+            color: #ffc107;
+        }
+        
+        .coins-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .coins-label {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .main-content {
+            padding: 40px;
+        }
+        
+        .main-button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 25px 50px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            margin-bottom: 30px;
+        }
+        
+        .main-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
+        }
+        
+        .main-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .main-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .offers-section {
+            margin-top: 30px;
+        }
+        
+        .offers-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .offer-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .offer-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+        
+        .offer-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .offer-info p {
+            color: #666;
+        }
+        
+        .offer-reward {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .coins-amount {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        .start-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .start-btn:hover {
+            background: #45a049;
+        }
+        
+        .ad-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .ad-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .ad-header {
+            background: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ad-body {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .ad-video {
+            width: 100%;
+            height: 300px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .ad-timer {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 20px 0;
+        }
+        
+        .close-ad {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-button {
+                padding: 20px 30px;
+                font-size: 1.5rem;
+            }
+            
+            .coins-display {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Watch Ads and Earn</h1>
+            <p>Earn coins by watching ads and completing offers</p>
+        </div>
+        
+        <div class="wallet-section">
+            <div class="wallet-icon">💰</div>
+            <div>
+                <div class="coins-display" id="coins">0</div>
+                <div class="coins-label">Total Coins Earned</div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <button class="main-button" id="watchAdBtn">
+                Watch Ad and Earn
+            </button>
+            
+            <div class="status-message" id="statusMessage"></div>
+            
+            <div class="offers-section">
+                <h2 class="offers-title">Available Offers</h2>
+                
+                <div class="offer-card">
+                    <div class="offer-info">
+                        <h3>Watch Video Ad</h3>
+                        <p>Watch a short video advertisement</p>
+                    </div>
+                    <div class="offer-reward">
+                        <span class="coins-amount">+10 coins</span>
+                        <button class="start-btn" onclick="startAdOffer(10)">Start</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card">
+                    <div class="offer-info">
+                        <h3>Complete Survey</h3>
+                        <p>Answer a few questions</p>
+                    </div>
+                    <div class="offer-reward">
+                        <span class="coins-amount">+50 coins</span>
+                        <button class="start-btn" onclick="startAdOffer(50)">Start</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card">
+                    <div class="offer-info">
+                        <h3>Product Demo</h3>
+                        <p>Watch a product demonstration</p>
+                    </div>
+                    <div class="offer-reward">
+                        <span class="coins-amount">+25 coins</span>
+                        <button class="start-btn" onclick="startAdOffer(25)">Start</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="ad-container" id="adContainer">
+        <div class="ad-content">
+            <div class="ad-header">
+                <span>Advertisement</span>
+                <button class="close-ad" onclick="closeAd()">×</button>
+            </div>
+            <div class="ad-body">
+                <h2>Thank you for watching!</h2>
+                <div class="ad-video" id="adVideo">
+                    <div>Video Advertisement Playing...</div>
+                </div>
+                <div class="ad-timer" id="adTimer">
+                    Video will complete in <span id="countdown">5</span> seconds
+                </div>
+                <p>Please watch the ad to completion to earn your reward.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // User wallet state
+        let coins = parseInt(localStorage.getItem('userCoins')) || 0;
+        let currentAdReward = 0;
+        let countdownInterval = null;
+        
+        // DOM elements
+        const coinsElement = document.getElementById('coins');
+        const watchAdBtn = document.getElementById('watchAdBtn');
+        const adContainer = document.getElementById('adContainer');
+        const adTimer = document.getElementById('adTimer');
+        const countdownElement = document.getElementById('countdown');
+        const statusMessage = document.getElementById('statusMessage');
+        const adVideo = document.getElementById('adVideo');
+        
+        // Initialize coins display
+        coinsElement.textContent = coins;
+        
+        // Main button click handler
+        watchAdBtn.addEventListener('click', () => {
+            startAdOffer(10); // Default reward for main button
+        });
+        
+        // Start an ad offer
+        function startAdOffer(reward) {
+            if (isAdPlaying()) {
+                showMessage('Please complete the current ad first!', 'error');
+                return;
+            }
+            
+            currentAdReward = reward;
+            adContainer.style.display = 'flex';
+            watchAdBtn.disabled = true;
+            
+            // Simulate video ad with countdown
+            let secondsLeft = 5; // Simulated ad duration
+            
+            // Clear any existing interval
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            // Start countdown
+            countdownElement.textContent = secondsLeft;
+            countdownInterval = setInterval(() => {
+                secondsLeft--;
+                countdownElement.textContent = secondsLeft;
+                
+                if (secondsLeft <= 0) {
+                    completeAd();
+                }
+            }, 1000);
+            
+            // Simulate video playing
+            adVideo.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">📺</div>
+                    <div>Advertisement playing...</div>
+                    <div style="margin-top: 20px; font-size: 0.9rem; color: #888;">
+                        Simulated ad content (${reward} coins reward)
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Complete the ad and give reward
+        function completeAd() {
+            clearInterval(countdownInterval);
+            
+            // Add coins
+            coins += currentAdReward;
+            coinsElement.textContent = coins;
+            localStorage.setItem('userCoins', coins);
+            
+            // Show success message
+            adVideo.innerHTML = `
+                <div style="text-align: center; color: #4CAF50;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
+                    <div style="font-size: 1.5rem; font-weight: bold;">
+                        +${currentAdReward} Coins Earned!
+                    </div>
+                    <div style="margin-top: 20px;">
+                        Total: ${coins} coins
+                    </div>
+                </div>
+            `;
+            
+            adTimer.style.display = 'none';
+            
+            // Close ad after 2 seconds
+            setTimeout(() => {
+                closeAd();
+                showMessage(`You earned ${currentAdReward} coins!`, 'success');
+            }, 2000);
+        }
+        
+        // Close the ad container
+        function closeAd() {
+            adContainer.style.display = 'none';
+            watchAdBtn.disabled = false;
+            adTimer.style.display = 'block';
+            adTimer.textContent = 'Video will complete in 5 seconds';
+            countdownElement.textContent = '5';
+            
+            // Reset ad video display
+            adVideo.innerHTML = '<div>Video Advertisement Playing...</div>';
+            
+            clearInterval(countdownInterval);
+        }
+        
+        // Show status message
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Check if ad is currently playing
+        function isAdPlaying() {
+            return adContainer.style.display === 'flex';
+        }
+        
+        // Simulate additional offers (for demonstration)
+        const additionalOffers = [
+            { title: 'Game Trial', description: 'Play our featured game for 5 minutes', reward: 30 },
+            { title: 'App Review', description: 'Write a review of our app', reward: 40 },
+            { title: 'Social Share', description: 'Share on social media', reward: 20 }
+        ];
+        
+        // Load offers dynamically (optional)
+        function loadAdditionalOffers() {
+            const offersSection = document.querySelector('.offers-section');
+            
+            additionalOffers.forEach(offer => {
+                const offerCard = document.createElement('div');
+                offerCard.className = 'offer-card';
+                offerCard.innerHTML = `
+                    <div class="offer-info">
+                        <h3>${offer.title}</h3>
+                        <p>${offer.description}</p>
+                    </div>
+                    <div class="offer-reward">
+                        <span class="coins-amount">+${offer.reward} coins</span>
+                        <button class="start-btn" onclick="startAdOffer(${offer.reward})">Start</button>
+                    </div>
+                `;
+                offersSection.appendChild(offerCard);
+            });
+        }
+        
+        // Uncomment to load additional offers
+        // loadAdditionalOffers();
+        
+        // Save coins when page is closed
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('userCoins', coins);
+        });
+        
+        // Show welcome message
+        window.addEventListener('load', () => {
+            if (coins === 0) {
+                showMessage('Welcome! Click "Watch Ad and Earn" to start earning coins!', 'success');
+            }
+        });
+    </script>
+</body>
+</html>
